@@ -8,19 +8,26 @@ import pandas as pd
 
 class Container(dict):
     
-    def __init__(self, data):
-        super(Container, self).__init__(data)
-        self._repr = "{" + ", ".join(data.keys()) + "}"
-    
     def __dir__(self):
         return list(self.keys())
     
     def __repr__(self):
-        return "<Container({})>".format(self._repr)
+        resume = "{" + ", ".join(self.keys()) + "}"
+        return "<Container({})>".format(resume)
     
     def __getattr__(self, an):
         return self[an]
         
+    def __setstate__(self, state):
+        # Bunch pickles generated with scikit-learn 0.16.* have an non
+        # empty __dict__. This causes a surprising behaviour when
+        # loading these pickles scikit-learn 0.17: reading bunch.key
+        # uses __dict__ but assigning to bunch.key use __setattr__ and
+        # only changes bunch['key']. More details can be found at:
+        # https://github.com/scikit-learn/scikit-learn/issues/6196.
+        # Overriding __setstate__ to be a noop has the effect of
+        # ignoring the pickled __dict__
+        pass
         
 def read(path):
     data = {}
