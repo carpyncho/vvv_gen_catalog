@@ -1,4 +1,6 @@
 
+import warnings
+
 import numpy as np
 
 import pandas as pd
@@ -7,6 +9,7 @@ from matplotlib import cm
 from matplotlib import pyplot as plt
 
 import sklearn
+from sklearn import feature_selection as fs
 from sklearn import preprocessing as prp
 from sklearn.model_selection import (
     KFold, StratifiedKFold, train_test_split)
@@ -61,26 +64,28 @@ class Experiment(object):
                 'confusion_matrix': metrics.confusion_matrix(y_test, predictions)})
     
     def __call__(self, *args, **kwargs):
-        return self.run(*args, **kwargs)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            return self.run(*args, **kwargs)
 
     
 class WithAnotherExperiment(Experiment):
     
     def run(self, train_name):
+        if isinstance(train_name, str):
+            train_df = self.data[train_name]
+            train_name = [train_name]
+        else:
+            train_df = pd.concat(
+                [self.data[n] for n in train_name], 
+                ignore_index=True)
+
         results = []
         for test_name in self.data.keys():
-            if isinstance(train_name, str):
-                compare = test_name != train_name
-            else:
-                compare = test_name not in train_name
-            if compare:
+
+            if test_name not in train_name:
                  # retrieve the train data and test dataframe
-                if isinstance(train_name, str):
-                    train_df = self.data[train_name]
-                else:
-                    train_df = pd.concat([self.data[n] for n in train_name], 
-                                         ignore_index=True)
-                    train_name = " ".join(train_name)
+
                 test_df = self.data[test_name]
 
                 # filter only the important lines
@@ -96,7 +101,7 @@ class WithAnotherExperiment(Experiment):
                 rst = self.experiment(x_train, y_train, x_test, y_test)
                 rst.update({
                     'test_name': test_name,
-                    'train_name': train_name})
+                    'train_name': " + ".join(train_name)})
                 
                 if self.verbose:
                     print "{} (TRAIN) Vs. {} (TEST)".format(rst.train_name, rst.test_name)
@@ -112,9 +117,8 @@ class KFoldExperiment(Experiment):
         # kfold
         skf = StratifiedKFold(n_splits=nfolds)
         
-        cfilter = [sclasses[self.pcls], sclasses[""]]
-        subject_df = data[subject]
-        subject_df = subject_df[subject_df.scls.isin(cfilter)]
+        subject_df = self.data[subject]
+        subject_df = subject_df[subject_df.scls.isin(self.cfilter)]
         
         x = subject_df[self.X_columns].values
         y = subject_df[self.y_column].values
@@ -129,11 +133,7 @@ class KFoldExperiment(Experiment):
             x_test = x[test]
             y_test = y[test]
             
-            rst = self.experiment(x_train, y_train, x_test, y_test)
-            if self.verbose: 
-                print metrics.classification_report(rst.y_test, rst.predictions)
-                print "-" * 80
-            
+            rst = self.experiment(x_train, y_train, x_test, y_test)            
             probabilities = (
                 rst.probabilities if probabilities is None else
                 np.vstack([probabilities, rst.probabilities]))
@@ -148,6 +148,11 @@ class KFoldExperiment(Experiment):
             y_testing, 1.- probabilities[:,0], 
             pos_label=self.cfilter[0])
         roc_auc = metrics.auc(fpr, tpr)
+        
+        if self.verbose: 
+            print metrics.classification_report(y_testing, predictions)
+            print "-" * 80
+        
         return container.Container({
             'fpr': fpr, 
             'tpr': tpr, 
@@ -160,15 +165,21 @@ class KFoldExperiment(Experiment):
             'confusion_matrix': metrics.confusion_matrix(y_testing, predictions)})
     
 
-def roc(results):
-    cmap = cm.get_cmap("plasma")
+def roc(results, cmap="plasma"):
+    cmap = cm.get_cmap(cmap)
     colors = iter(cmap(np.linspace(0, 1, len(results))))
-
-    for res  in results:
-        cname = "Vs.{}".format(res.test_name)
-        color = next(colors)
-        label = '%s (area = %0.2f)' % (cname, res["roc_auc"])
-        plt.plot(res["fpr"], res["tpr"], color=color, label=label)
+    
+    if isinstance(results, dict):
+        for cname, res  in results.items():
+            color = next(colors)
+            label = '%s (area = %0.2f)' % (cname, res["roc_auc"])
+            plt.plot(res["fpr"], res["tpr"], color=color, label=label)
+    else:
+        for res in results:
+            cname = "Vs.{}".format(res.test_name)
+            color = next(colors)
+            label = '%s (area = %0.2f)' % (cname, res["roc_auc"])
+            plt.plot(res["fpr"], res["tpr"], color=color, label=label)
 
     plt.plot([0, 1], [0, 1], color='navy', lw=1, linestyle='--')
     plt.xlim([0.0, 1.0])
@@ -186,3 +197,44 @@ def resume(label, results, rfunc):
     mtpr = rfunc(np.vstack([r.tpr[:slice] for r in results]), axis=0)
     roc_auc = rfunc([r.roc_auc for r in results])
     return container.Container(test_name=label, fpr=mfpr, tpr=mtpr, roc_auc=roc_auc)
+
+
+def discretize_classes(data):
+    classes = set()
+    for df in data.values():
+        classes.update(df.ogle3_type)
+    sclasses_names = set(c.split("-", 1)[0] for c in classes)
+    classes = dict(zip(sorted(classes), range(len(classes))))
+    sclasses = dict(zip(sorted(sclasses_names), range(len(sclasses_names))))
+
+    for df in data.values():
+        df["cls"] = df.ogle3_type.apply(classes.get)
+        df["scls"] = df.ogle3_type.apply(lambda v: sclasses.get(v.split("-", 1)[0]))
+    
+    return data, classes, sclasses
+
+
+def clean_features(data, name):
+    df = data[name]
+    X_columns = df.columns[~df.columns.isin(["id", "cls", "scls", "ogle3_type"])]
+
+    # remove signatures
+    X_columns = X_columns[~X_columns.str.startswith("Signature_")]
+    X_columns
+
+    # columns with nan and null
+    with_nulls = set()
+    for df in data.values():
+        for c in X_columns:
+            if df[c].isnull().any():
+                with_nulls.add(c)
+    X_columns = X_columns[~X_columns.isin(with_nulls)]
+
+    # low variance
+    df = pd.concat(data.values())
+    y = df["cls"].values
+
+    vt = fs.VarianceThreshold()
+    vt.fit(df[X_columns].values, y)
+    X_columns = X_columns[vt.get_support()]
+    return X_columns
