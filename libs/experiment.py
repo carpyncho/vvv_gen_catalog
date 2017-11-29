@@ -38,7 +38,8 @@ class Experiment(object):
         x_test = prp.StandardScaler().fit_transform(x_test)
         
         if self.sampler:
-            x_train, y_train = self.sampler.fit_sample(x_train, y_train)
+            sampler = sklearn.clone(self.sampler)
+            x_train, y_train = sampler.fit_sample(x_train, y_train)
         
         clf = sklearn.clone(self.clf)
         clf.fit(x_train, y_train)
