@@ -217,7 +217,7 @@ def discretize_classes(data):
 
 def clean_features(data, name):
     df = data[name]
-    X_columns = df.columns[~df.columns.isin(["id", "cls", "scls", "ogle3_type"])]
+    X_columns = df.columns[~df.columns.isin(["id", "cls", "scls", "ogle3_type", "AMP"])]
 
     # remove signatures
     X_columns = X_columns[~X_columns.str.startswith("Signature_")]
