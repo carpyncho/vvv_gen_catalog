@@ -192,14 +192,6 @@ def roc(results, cmap="plasma"):
     plt.show()
     
     
-def resume(label, results, rfunc):
-    slice = np.min([r.fpr.size for r in results])
-    mfpr = rfunc(np.vstack([r.fpr[:slice] for r in results]), axis=0)
-    mtpr = rfunc(np.vstack([r.tpr[:slice] for r in results]), axis=0)
-    roc_auc = rfunc([r.roc_auc for r in results])
-    return container.Container(test_name=label, fpr=mfpr, tpr=mtpr, roc_auc=roc_auc)
-
-
 def discretize_classes(data):
     classes = set()
     for df in data.values():
@@ -239,3 +231,15 @@ def clean_features(data, name):
     vt.fit(df[X_columns].values, y)
     X_columns = X_columns[vt.get_support()]
     return X_columns
+
+
+def union(data, ycolumn, classes, preserve, unionvalue):
+    if isinstance(preserve, str):
+        preserve = [preserve]
+    mapper = {v:(unionvalue if k not in preserve else v)
+              for k, v in classes.items()}
+    newcls = {k:(unionvalue if k not in preserve else v)
+              for k, v in classes.items()}
+    for df in data.values():
+        df[ycolumn] = df[ycolumn].apply(mapper.get)
+    return data, newcls

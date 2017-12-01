@@ -49,3 +49,33 @@ hasta 2500. Pueden ser un poco variables esos numeros, la idea es
 igualar las dos clases cerca de 2500.
 
 Dale nomas...
+
+----
+
+## On Thu, 30 Nov 2017 at 19:08 Pablo Granitto <granitto@cifasis-conicet.gov.ar> wrote:
+
+Bueno, muy buen laburo de programador ;)
+Ahora hay que usar el cerebro, aprender lecciones y ver como desarrollar
+un metodo para "aprender" en astronomia...
+
+Les paso lo que veo:
+Las curvas ROC son iguales en los cuatro casos (salvo fluctuaciones
+minimas) en todas las situaciones. Eso quiere decir que:
+1. el tipo de modelos de aprendizaje que estamos usando no se deja
+influenciar por la clase mayoritaria, salvo para ver donde pone el
+"umbral" de decision. Visto como un problema de "deteccion de clase 3",
+todos los sampleos y sobresampleos dan lo mismo.
+2. no hay informacion nueva en los otros tiles, practicamente. Uno
+podria aprender el detector en un unico tile y usarlo en todos los demas
+y esperar el mismo resultado que combinando muchos.
+3. Las diferencias entre clasificares solo tienen sentido mirando las
+curvas ROC, no hay que mirar otra cosa.
+4. Mirando los resultados globalmente, da la sensacion que como problema
+de deteccion estamos en el limite de eficiencia, que el problema son los
+features que usamos que no tienen mas informacion que extraerle.
+
+Ahora hay que ver si estas 4 cosas se mantienen al ampliar la clase 0.
+
+Dale para adelante!
+Saludos!
+Pablo
