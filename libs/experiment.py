@@ -21,7 +21,7 @@ from . import container
 class Experiment(object):
     
     def __init__(self, data, clf, pcls, X_columns, y_column, clsnum, 
-                 ncls="", sampler=None, verbose=True):
+                 ncls="", sampler=None, verbose=True, real_y_column=None):
         self.data = data
         self.clf = clf
         self.pcls = pcls
@@ -30,8 +30,10 @@ class Experiment(object):
         self.verbose = verbose
         self.X_columns = X_columns
         self.y_column = y_column
+        self.real_y_column = real_y_column or y_column
         self.clsnum = clsnum
         self.cfilter = [clsnum[pcls], clsnum[ncls]]
+        
     
     def experiment(self, x_train, y_train, x_test, y_test):
         x_train = prp.StandardScaler().fit_transform(x_train)
@@ -98,10 +100,12 @@ class WithAnotherExperiment(Experiment):
                 y_train = train_df[self.y_column].values
                 x_test = test_df[self.X_columns].values
                 y_test = test_df[self.y_column].values
+                y_test_real = test_df[self.real_y_column]
 
                 rst = self.experiment(x_train, y_train, x_test, y_test)
                 rst.update({
                     'test_name': test_name,
+                    'y_test_real': y_test_real,
                     'train_name': " + ".join(train_name)})
                 
                 if self.verbose:
@@ -123,16 +127,19 @@ class KFoldExperiment(Experiment):
         
         x = subject_df[self.X_columns].values
         y = subject_df[self.y_column].values
+        y_real = subject_df[self.real_y_column].values
 
         probabilities = None
         predictions = np.array([])
         y_testing = np.array([])
+        y_testing_real = np.array([])
 
         for train, test in skf.split(x, y):
             x_train = x[train]
             y_train = y[train]
             x_test = x[test]
             y_test = y[test]
+            y_test_real = y_real[test]
             
             rst = self.experiment(x_train, y_train, x_test, y_test)            
             probabilities = (
@@ -140,6 +147,7 @@ class KFoldExperiment(Experiment):
                 np.vstack([probabilities, rst.probabilities]))
             predictions = np.hstack([predictions, rst.predictions])
             y_testing = np.hstack([y_testing, y_test])
+            y_testing_real = np.hstack([y_testing_real, y_test_real])
             del rst
             
         fpr, tpr, thresholds = metrics.roc_curve(
@@ -154,16 +162,18 @@ class KFoldExperiment(Experiment):
             print metrics.classification_report(y_testing, predictions)
             print "-" * 80
         
-        return container.Container({
+        result = container.Container({
             'fpr': fpr, 
             'tpr': tpr, 
             'thresh': thresholds, 
             'roc_auc': roc_auc, 
             'prec_rec_curve': prec_rec_curve,
             'y_test': y_testing, 
+            'y_testing_real': y_testing_real,
             'predictions': predictions,
             'probabilities': probabilities, 
             'confusion_matrix': metrics.confusion_matrix(y_testing, predictions)})
+        result.update()
     
 
 def roc(results, cmap="plasma"):
@@ -202,14 +212,17 @@ def discretize_classes(data):
 
     for df in data.values():
         df["cls"] = df.ogle3_type.apply(classes.get)
+        df["real_cls"] = df.ogle3_type.apply(classes.get)
         df["scls"] = df.ogle3_type.apply(lambda v: sclasses.get(v.split("-", 1)[0]))
+        df["real_scls"] = df.ogle3_type.apply(lambda v: sclasses.get(v.split("-", 1)[0]))
     
     return data, classes, sclasses
 
 
 def clean_features(data, name):
     df = data[name]
-    X_columns = df.columns[~df.columns.isin(["id", "cls", "scls", "ogle3_type", "AMP"])]
+    X_columns = df.columns[~df.columns.isin([
+        "id", "cls", "scls", "ogle3_type", "AMP", "real_cls", "real_scls"])]
 
     # remove signatures
     X_columns = X_columns[~X_columns.str.startswith("Signature_")]
