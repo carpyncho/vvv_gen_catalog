@@ -30,9 +30,15 @@ class Experiment(object):
         self.verbose = verbose
         self.X_columns = X_columns
         self.y_column = y_column
-        self.real_y_column = real_y_column or y_column
         self.clsnum = clsnum
         self.cfilter = [clsnum[pcls], clsnum[ncls]]
+        
+        if real_y_column is None:
+            real_y_column = "{}_orig".format(y_column)
+            columns = list(data.values())[0].columns
+            if real_y_column not in columns:
+                real_y_column = y_column
+        self.real_y_column = real_y_column
         
     
     def experiment(self, x_train, y_train, x_test, y_test):
@@ -100,7 +106,7 @@ class WithAnotherExperiment(Experiment):
                 y_train = train_df[self.y_column].values
                 x_test = test_df[self.X_columns].values
                 y_test = test_df[self.y_column].values
-                y_test_real = test_df[self.real_y_column]
+                y_test_real = test_df[self.real_y_column].values
 
                 rst = self.experiment(x_train, y_train, x_test, y_test)
                 rst.update({
@@ -162,18 +168,18 @@ class KFoldExperiment(Experiment):
             print metrics.classification_report(y_testing, predictions)
             print "-" * 80
         
-        result = container.Container({
+        return container.Container({
             'fpr': fpr, 
             'tpr': tpr, 
             'thresh': thresholds, 
             'roc_auc': roc_auc, 
             'prec_rec_curve': prec_rec_curve,
             'y_test': y_testing, 
-            'y_testing_real': y_testing_real,
+            'y_test_real': y_testing_real,
             'predictions': predictions,
             'probabilities': probabilities, 
             'confusion_matrix': metrics.confusion_matrix(y_testing, predictions)})
-        result.update()
+        
     
 
 def roc(results, cmap="plasma"):
@@ -253,6 +259,29 @@ def union(data, ycolumn, classes, preserve, unionvalue):
               for k, v in classes.items()}
     newcls = {k:(unionvalue if k not in preserve else v)
               for k, v in classes.items()}
+    orig_name = "{}_orig".format(ycolumn)
     for df in data.values():
+        df[orig_name] = df[ycolumn].copy()
         df[ycolumn] = df[ycolumn].apply(mapper.get)
     return data, newcls
+
+
+def real_vs_predicted(result, classes):
+    if not isinstance(result, dict):
+        real_all = np.concatenate([r.y_test_real for r in result])
+        condensed_all = np.concatenate([r.predictions for r in result])
+    else:
+        real_all = result.y_test_real
+        condensed_all = result.predictions
+        
+    cls, totals, cls0, cls1, cls_name = [], [], [], [], []
+    for real_cls in sorted(set(real_all)):
+        condensed = condensed_all[real_all == real_cls]
+        total = float(len(condensed))
+        cls.append(real_cls)
+        cls_name.append(classes[real_cls] or "Unknow")
+        totals.append(total)
+        cls0.append(len(condensed[condensed == 0]) / total) 
+        cls1.append(len(condensed[condensed == 3]) / total)
+    df = pd.DataFrame({"Total": totals, "Predicted0": cls0, "Predicted3": cls1, "Name": cls_name}, index=cls)
+    return df[["Name", "Total", "Predicted0", "Predicted3"]]
