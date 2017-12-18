@@ -8,6 +8,8 @@ import pandas as pd
 from matplotlib import cm
 from matplotlib import pyplot as plt
 
+import seaborn as sns
+
 import sklearn
 from sklearn import feature_selection as fs
 from sklearn import preprocessing as prp
@@ -266,7 +268,7 @@ def union(data, ycolumn, classes, preserve, unionvalue):
     return data, newcls
 
 
-def real_vs_predicted(result, classes):
+def real_vs_predicted_data(result, classes):
     if not isinstance(result, dict):
         real_all = np.concatenate([r.y_test_real for r in result])
         condensed_all = np.concatenate([r.predictions for r in result])
@@ -279,9 +281,29 @@ def real_vs_predicted(result, classes):
         condensed = condensed_all[real_all == real_cls]
         total = float(len(condensed))
         cls.append(real_cls)
-        cls_name.append(classes[real_cls] or "Unknow")
+        cls_name.append("{} ({})".format(
+            classes[real_cls] or "Unknow", int(real_cls)))
         totals.append(total)
         cls0.append(len(condensed[condensed == 0]) / total) 
         cls1.append(len(condensed[condensed == 3]) / total)
-    df = pd.DataFrame({"Total": totals, "Predicted0": cls0, "Predicted3": cls1, "Name": cls_name}, index=cls)
+    df = pd.DataFrame({"Total": totals, "Predicted0": 
+                       cls0, "Predicted3": cls1, "Name": cls_name}, index=cls)
     return df[["Name", "Total", "Predicted0", "Predicted3"]]
+
+
+def real_vs_predicted(result, classes):
+    df = real_vs_predicted_data(result, classes)
+    f, ax = plt.subplots(figsize=(12, 6))
+
+    sns.set_color_codes("pastel")
+    ax = sns.barplot(x="Total", y="Name", 
+                     data=df, estimator=lambda x: 1, color="b")
+
+    sns.set_color_codes("muted")
+    sns.barplot(x="Predicted0", y="Name", data=df, 
+                color="b", label="Predicted as Unknow (0)")
+
+    ax.legend(ncol=2, loc="lower right", frameon=True)
+    ax.set(xlim=(0, 1.29), ylabel="",
+           xlabel="Predicted class")
+    sns.despine(left=True, bottom=True)
