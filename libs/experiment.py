@@ -231,7 +231,11 @@ def clean_features(data, name):
     df = data[name]
     X_columns = df.columns[~df.columns.isin([
         "id", "cls", "scls", "ogle3_type", "AMP", "real_cls", "real_scls"])]
-
+    
+    # remove stellar classes
+    X_columns = X_columns[~X_columns.str.startswith("scls_")]
+    X_columns
+    
     # remove signatures
     X_columns = X_columns[~X_columns.str.startswith("Signature_")]
     X_columns
@@ -242,6 +246,7 @@ def clean_features(data, name):
         for c in X_columns:
             if df[c].isnull().any():
                 with_nulls.add(c)
+    print("Removing {} because null".format(list(with_nulls)))
     X_columns = X_columns[~X_columns.isin(with_nulls)]
 
     # low variance
@@ -250,7 +255,9 @@ def clean_features(data, name):
 
     vt = fs.VarianceThreshold()
     vt.fit(df[X_columns].values, y)
+    print("Removing {} because lowvariance".format(list(X_columns[~vt.get_support()])))
     X_columns = X_columns[vt.get_support()]
+    
     return X_columns
 
 
