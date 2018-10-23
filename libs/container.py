@@ -17,6 +17,9 @@ class Container(dict):
     
     def __getattr__(self, an):
         return self[an]
+    
+    def __setattr__(self, an, av):
+        self[an] = av
         
     def __setstate__(self, state):
         # Bunch pickles generated with scikit-learn 0.16.* have an non
