@@ -230,7 +230,7 @@ def discretize_classes(data):
 def clean_features(data, name):
     df = data[name]
     X_columns = df.columns[~df.columns.isin([
-        "id", "cls", "scls", "ogle3_type", "AMP", "real_cls", "real_scls"])]
+        "id", "cls", "scls", "ogle3_type", "AMP", "real_cls", "real_scls", "tcls"])]
     
     # remove stellar classes
     X_columns = X_columns[~X_columns.str.startswith("scls_")]
