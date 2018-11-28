@@ -61,5 +61,5 @@ target/
 setuptools-*.zip
 
 *.pkl
-data/*
+
 cache/*
