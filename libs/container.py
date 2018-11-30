@@ -12,7 +12,13 @@ class Container(dict):
         return list(self.keys())
     
     def __repr__(self):
+<<<<<<< HEAD
         resume = "{" + ", ".join(self.keys()) + "}"
+=======
+        resume = str({
+            k: len(v) if isinstance(v, pd.DataFrame) else type(v) 
+            for k, v in sorted(self.items())})
+>>>>>>> 355f3f69c644942bd910a5af461ce51c9b5f1bcd
         return "<Container({})>".format(resume)
     
     def __getattr__(self, an):
