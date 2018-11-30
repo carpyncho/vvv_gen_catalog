@@ -89,7 +89,7 @@ class WithAnotherExperiment(Experiment):
                 ignore_index=True)
 
         results = []
-        for test_name in self.data.keys():
+        for test_name in sorted(self.data.keys()):
 
             if test_name not in train_name:
                  # retrieve the train data and test dataframe

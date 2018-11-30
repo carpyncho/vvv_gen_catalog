@@ -14,7 +14,7 @@ class Container(dict):
     def __repr__(self):
         resume = str({
             k: len(v) if isinstance(v, pd.DataFrame) else type(v) 
-            for k, v in self.items()})
+            for k, v in sorted(self.items())})
         return "<Container({})>".format(resume)
     
     def __getattr__(self, an):
