@@ -216,3 +216,35 @@ def roc(results, cmap="plasma", save_to=None):
         plt.savefig(save_to)
     
     plt.show()
+    
+
+def roc(results, cmap="plasma", ax=None, save_to=None):
+    if ax == None:
+        ax = plt.gca()
+    
+    cmap = cm.get_cmap(cmap)
+    colors = iter(cmap(np.linspace(0, 1, len(results))))
+
+    if isinstance(results, dict):
+        for cname, res  in results.items():
+            color = next(colors)
+            label = '%s (area = %0.2f)' % (cname, res["roc_auc"])
+            ax.plot(res["fpr"], res["tpr"], color=color, label=label)
+    else:
+        for res in results:
+            cname = "Vs.{}".format(res.test_name)
+            color = next(colors)
+            label = '%s (area = %0.2f)' % (cname, res["roc_auc"])
+            ax.plot(res["fpr"], res["tpr"], color=color, label=label)
+
+    ax.plot([0, 1], [0, 1], color='navy', lw=1, linestyle='--')
+    ax.set_xlim([0.0, 1.0])
+    ax.set_ylim([0.0, 1.05])
+    ax.set_xlabel('Tasa de Falsos Positivos')
+    ax.set_ylabel('Tasa de Verdaderos Positivos')
+    ax.set_title('Curva ROC')
+    ax.legend(loc="lower right")
+    
+    plt.tight_layout()
+    
+    return ax

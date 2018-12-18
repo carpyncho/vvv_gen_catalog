@@ -1,0 +1,1683 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{03\_sample2.5k}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \hypertarget{clasificaciones-usando-muestra-de-tamauxf1o-2500}{%
+\section{Clasificaciones usando muestra de tamaño
+2500}\label{clasificaciones-usando-muestra-de-tamauxf1o-2500}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{k+kn}{import} \PY{n+nn}{pickle}
+        
+        \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k+kn}{as} \PY{n+nn}{np}
+        
+        \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k+kn}{as} \PY{n+nn}{pd}
+        
+        \PY{o}{\PYZpc{}} \PY{n}{matplotlib} \PY{n}{inline}
+        \PY{k+kn}{import} \PY{n+nn}{matplotlib.pyplot} \PY{k+kn}{as} \PY{n+nn}{plt}
+        \PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k+kn}{as} \PY{n+nn}{sns}
+        \PY{c+c1}{\PYZsh{} sns.set()}
+        
+        \PY{k+kn}{from} \PY{n+nn}{sklearn.svm} \PY{k+kn}{import} \PY{n}{SVC}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn.tree} \PY{k+kn}{import} \PY{n}{DecisionTreeClassifier}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn.ensemble} \PY{k+kn}{import} \PY{n}{RandomForestClassifier}
+        \PY{k+kn}{from} \PY{n+nn}{sklearn.neighbors} \PY{k+kn}{import} \PY{n}{KNeighborsClassifier}
+        
+        \PY{k+kn}{from} \PY{n+nn}{sklearn.preprocessing} \PY{k+kn}{import} \PY{n}{StandardScaler}
+        
+        \PY{k+kn}{from} \PY{n+nn}{libs.container} \PY{k+kn}{import} \PY{n}{Container}
+        \PY{k+kn}{from} \PY{n+nn}{libs.display} \PY{k+kn}{import} \PY{n}{d}
+        \PY{k+kn}{from} \PY{n+nn}{libs.experiment} \PY{k+kn}{import} \PY{n}{KFoldExperiment}\PY{p}{,} \PY{n}{WithAnotherExperiment}\PY{p}{,} \PY{n}{roc}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{k+kn}{import} \PY{n+nn}{joblib}
+        \PY{n}{cpu} \PY{o}{=} \PY{n}{joblib}\PY{o}{.}\PY{n}{cpu\PYZus{}count}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{n}{sample} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}pickle}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{data/ogle3\PYZus{}only/scaled/s2\PYZus{}5k.pkl.bz2}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{sample}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tile}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{sample}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{id}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{i}\PY{p}{:} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{b}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{i}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{)}
+        \PY{n}{sample}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cls}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} \PY{o}{=} \PY{n}{sample}\PY{o}{.}\PY{n}{vs\PYZus{}type}\PY{o}{.}\PY{n}{apply}\PY{p}{(}\PY{k}{lambda} \PY{n}{x}\PY{p}{:} \PY{l+m+mi}{0} \PY{k}{if} \PY{n}{x} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}} \PY{k}{else} \PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{no\PYZus{}features} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{id}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{vs\PYZus{}catalog}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{vs\PYZus{}type}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ra\PYZus{}k}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{dec\PYZus{}k}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tile}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cls}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]} 
+        \PY{n}{X\PYZus{}columns} \PY{o}{=} \PY{p}{[}\PY{n}{c} \PY{k}{for} \PY{n}{c} \PY{o+ow}{in} \PY{n}{sample}\PY{o}{.}\PY{n}{columns} \PY{k}{if} \PY{n}{c} \PY{o+ow}{not} \PY{o+ow}{in} \PY{n}{no\PYZus{}features}\PY{p}{]}
+        
+        \PY{n}{grouped} \PY{o}{=} \PY{n}{sample}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{tile}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{data} \PY{o}{=} \PY{n}{Container}\PY{p}{(}\PY{p}{\PYZob{}}\PY{n}{k}\PY{p}{:} \PY{n}{grouped}\PY{o}{.}\PY{n}{get\PYZus{}group}\PY{p}{(}\PY{n}{k}\PY{p}{)}\PY{o}{.}\PY{n}{copy}\PY{p}{(}\PY{p}{)} \PY{k}{for} \PY{n}{k} \PY{o+ow}{in} \PY{n}{grouped}\PY{o}{.}\PY{n}{groups}\PY{o}{.}\PY{n}{keys}\PY{p}{(}\PY{p}{)}\PY{p}{\PYZcb{}}\PY{p}{)}
+        
+        \PY{k}{del} \PY{n}{grouped}\PY{p}{,} \PY{n}{sample}
+\end{Verbatim}
+
+
+    \hypertarget{features}{%
+\subsection{Features}\label{features}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{n+nb+bp}{cls} \PY{o}{=} \PY{p}{\PYZob{}}\PY{l+m+mi}{0}\PY{p}{:}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{:}\PY{l+m+mi}{1}\PY{p}{\PYZcb{}}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{d}\PY{p}{(}\PY{n}{X\PYZus{}columns}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  cnt
+\item
+  Amplitude
+\item
+  Autocor\_length
+\item
+  Beyond1Std
+\item
+  CAR\_mean
+\item
+  CAR\_sigma
+\item
+  CAR\_tau
+\item
+  Con
+\item
+  Eta\_e
+\item
+  FluxPercentileRatioMid20
+\item
+  FluxPercentileRatioMid35
+\item
+  FluxPercentileRatioMid50
+\item
+  FluxPercentileRatioMid65
+\item
+  FluxPercentileRatioMid80
+\item
+  Freq1\_harmonics\_amplitude\_0
+\item
+  Freq1\_harmonics\_amplitude\_1
+\item
+  Freq1\_harmonics\_amplitude\_2
+\item
+  Freq1\_harmonics\_amplitude\_3
+\item
+  Freq1\_harmonics\_rel\_phase\_0
+\item
+  Freq1\_harmonics\_rel\_phase\_1
+\item
+  Freq1\_harmonics\_rel\_phase\_2
+\item
+  Freq1\_harmonics\_rel\_phase\_3
+\item
+  LinearTrend
+\item
+  MaxSlope
+\item
+  Mean
+\item
+  Meanvariance
+\item
+  MedianAbsDev
+\item
+  MedianBRP
+\item
+  PairSlopeTrend
+\item
+  PercentAmplitude
+\item
+  PercentDifferenceFluxPercentile
+\item
+  PeriodLS
+\item
+  Period\_fit
+\item
+  Psi\_CS
+\item
+  Psi\_eta
+\item
+  Q31
+\item
+  Rcs
+\item
+  Skew
+\item
+  SmallKurtosis
+\item
+  Std
+\item
+  c89\_jk\_color
+\item
+  c89\_hk\_color
+\item
+  c89\_jh\_color
+\item
+  n09\_jk\_color
+\item
+  n09\_hk\_color
+\item
+  n09\_jh\_color
+\item
+  c89\_m2
+\item
+  c89\_m4
+\item
+  c89\_c3
+\item
+  n09\_m2
+\item
+  n09\_m4
+\item
+  n09\_c3
+\item
+  AmplitudeH
+\item
+  AmplitudeJ
+\item
+  ppmb
+\item
+  AmplitudeJH
+\item
+  AmplitudeJK
+\end{enumerate}
+
+    
+    \hypertarget{b278---k-folds}{%
+\subsection{b278 - K-Folds}\label{b278---k-folds}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}7}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time}
+        svc\PYZus{}linear = KFoldExperiment(
+            clf=SVC(kernel=\PYZsq{}linear\PYZsq{}, probability=True), clsnum=cls, 
+            data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+        svc\PYZus{}linear = svc\PYZus{}linear(\PYZdq{}b278\PYZdq{}, nfolds=10)
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+             precision    recall  f1-score   support
+
+        0.0       0.95      0.98      0.96      2489
+        1.0       0.86      0.68      0.76       423
+
+avg / total       0.93      0.94      0.93      2912
+
+--------------------------------------------------------------------------------
+CPU times: user 36 s, sys: 50 ms, total: 36 s
+Wall time: 36 s
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}8}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time}
+        svc\PYZus{}poly = KFoldExperiment(
+            clf=SVC(kernel=\PYZsq{}poly\PYZsq{}, probability=True), clsnum=cls, 
+            data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+        svc\PYZus{}poly = svc\PYZus{}poly(\PYZdq{}b278\PYZdq{}, nfolds=10)
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+             precision    recall  f1-score   support
+
+        0.0       0.93      0.99      0.96      2489
+        1.0       0.88      0.53      0.66       423
+
+avg / total       0.92      0.92      0.91      2912
+
+--------------------------------------------------------------------------------
+CPU times: user 19.5 s, sys: 2 ms, total: 19.5 s
+Wall time: 19.5 s
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}9}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time}
+        svc\PYZus{}rbf = KFoldExperiment(
+            clf=SVC(kernel=\PYZsq{}rbf\PYZsq{}, probability=True), clsnum=cls,
+            data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+        svc\PYZus{}rbf = svc\PYZus{}rbf(\PYZdq{}b278\PYZdq{}, nfolds=10)
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+             precision    recall  f1-score   support
+
+        0.0       0.94      0.99      0.97      2489
+        1.0       0.91      0.66      0.77       423
+
+avg / total       0.94      0.94      0.94      2912
+
+--------------------------------------------------------------------------------
+CPU times: user 20.8 s, sys: 141 ms, total: 21 s
+Wall time: 21 s
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}10}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time}
+         rf = KFoldExperiment(
+             clf=RandomForestClassifier(n\PYZus{}estimators=500, criterion=\PYZdq{}entropy\PYZdq{}, n\PYZus{}jobs=cpu), clsnum=cls, 
+             data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+         rf = rf(\PYZdq{}b278\PYZdq{}, nfolds=10)
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+             precision    recall  f1-score   support
+
+        0.0       0.97      0.99      0.98      2489
+        1.0       0.94      0.85      0.89       423
+
+avg / total       0.97      0.97      0.97      2912
+
+--------------------------------------------------------------------------------
+CPU times: user 2min 57s, sys: 9.82 s, total: 3min 7s
+Wall time: 42.3 s
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time}
+         knn = KFoldExperiment(
+             clf=KNeighborsClassifier(n\PYZus{}neighbors=50, weights=\PYZsq{}distance\PYZsq{}), clsnum=cls, 
+             data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+         knn = knn(\PYZdq{}b278\PYZdq{}, nfolds=10)
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+             precision    recall  f1-score   support
+
+        0.0       0.94      0.99      0.96      2489
+        1.0       0.89      0.60      0.72       423
+
+avg / total       0.93      0.93      0.93      2912
+
+--------------------------------------------------------------------------------
+CPU times: user 4.45 s, sys: 2 ms, total: 4.45 s
+Wall time: 4.45 s
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{roc}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{KNN}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{knn}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{RForest}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{rf}\PY{p}{,} 
+              \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SVC RBF}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{svc\PYZus{}rbf}\PY{p}{,} 
+              \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SVC Linear}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{svc\PYZus{}linear}\PY{p}{,}
+              \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SVC Polynomic}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{svc\PYZus{}poly}\PY{p}{\PYZcb{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_14_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{b278-vs.los-demas}{%
+\subsection{b278 vs.~Los demas}\label{b278-vs.los-demas}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}13}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time}
+         svc\PYZus{}linear = WithAnotherExperiment(
+             clf=SVC(kernel=\PYZsq{}linear\PYZsq{}, probability=True), clsnum=cls, 
+             data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+         roc(svc\PYZus{}linear(\PYZdq{}b278\PYZdq{}))
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b278 (TRAIN) Vs. b261 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.98      0.98      0.98      2497
+          1       0.82      0.80      0.81       221
+
+avg / total       0.97      0.97      0.97      2718
+
+--------------------------------------------------------------------------------
+b278 (TRAIN) Vs. b262 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      0.99      0.98      2495
+          1       0.87      0.73      0.79       296
+
+avg / total       0.96      0.96      0.96      2791
+
+--------------------------------------------------------------------------------
+b278 (TRAIN) Vs. b263 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      0.99      0.98      2500
+          1       0.89      0.72      0.80       305
+
+avg / total       0.96      0.96      0.96      2805
+
+--------------------------------------------------------------------------------
+b278 (TRAIN) Vs. b264 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.98      0.99      0.98      2498
+          1       0.89      0.79      0.84       294
+
+avg / total       0.97      0.97      0.97      2792
+
+--------------------------------------------------------------------------------
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_16_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+CPU times: user 19.6 s, sys: 0 ns, total: 19.6 s
+Wall time: 19.6 s
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}14}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time}
+         svc\PYZus{}poly = WithAnotherExperiment(
+             clf=SVC(kernel=\PYZsq{}poly\PYZsq{}, probability=True), clsnum=cls, 
+             data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+         roc(svc\PYZus{}poly(\PYZdq{}b278\PYZdq{}))
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b278 (TRAIN) Vs. b261 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.98      0.98      0.98      2497
+          1       0.80      0.72      0.76       221
+
+avg / total       0.96      0.96      0.96      2718
+
+--------------------------------------------------------------------------------
+b278 (TRAIN) Vs. b262 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.96      0.99      0.98      2495
+          1       0.90      0.67      0.77       296
+
+avg / total       0.95      0.96      0.95      2791
+
+--------------------------------------------------------------------------------
+b278 (TRAIN) Vs. b263 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.95      0.98      0.97      2500
+          1       0.80      0.61      0.69       305
+
+avg / total       0.94      0.94      0.94      2805
+
+--------------------------------------------------------------------------------
+b278 (TRAIN) Vs. b264 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.96      0.98      0.97      2498
+          1       0.82      0.68      0.74       294
+
+avg / total       0.95      0.95      0.95      2792
+
+--------------------------------------------------------------------------------
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_17_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+CPU times: user 11.7 s, sys: 1e+03 µs, total: 11.7 s
+Wall time: 11.7 s
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}15}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time}
+         svc\PYZus{}rbf = WithAnotherExperiment(
+             clf=SVC(kernel=\PYZsq{}rbf\PYZsq{}, probability=True), clsnum=cls, 
+             data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+         roc(svc\PYZus{}rbf(\PYZdq{}b278\PYZdq{}))
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b278 (TRAIN) Vs. b261 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.98      0.99      0.99      2497
+          1       0.89      0.80      0.84       221
+
+avg / total       0.97      0.98      0.98      2718
+
+--------------------------------------------------------------------------------
+b278 (TRAIN) Vs. b262 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      0.99      0.98      2495
+          1       0.93      0.75      0.83       296
+
+avg / total       0.97      0.97      0.97      2791
+
+--------------------------------------------------------------------------------
+b278 (TRAIN) Vs. b263 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.96      0.99      0.98      2500
+          1       0.94      0.69      0.79       305
+
+avg / total       0.96      0.96      0.96      2805
+
+--------------------------------------------------------------------------------
+b278 (TRAIN) Vs. b264 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      0.99      0.98      2498
+          1       0.94      0.75      0.84       294
+
+avg / total       0.97      0.97      0.97      2792
+
+--------------------------------------------------------------------------------
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_18_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+CPU times: user 13 s, sys: 11 ms, total: 13 s
+Wall time: 13 s
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}16}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time} 
+         rf = WithAnotherExperiment(
+             clf=RandomForestClassifier(n\PYZus{}estimators=500, criterion=\PYZdq{}entropy\PYZdq{}, n\PYZus{}jobs=cpu), 
+             clsnum=cls, data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+         roc(rf(\PYZdq{}b278\PYZdq{}))
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b278 (TRAIN) Vs. b261 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.99      1.00      0.99      2497
+          1       0.94      0.88      0.91       221
+
+avg / total       0.99      0.99      0.99      2718
+
+--------------------------------------------------------------------------------
+b278 (TRAIN) Vs. b262 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.98      1.00      0.99      2495
+          1       0.97      0.85      0.90       296
+
+avg / total       0.98      0.98      0.98      2791
+
+--------------------------------------------------------------------------------
+b278 (TRAIN) Vs. b263 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.98      1.00      0.99      2500
+          1       0.96      0.86      0.91       305
+
+avg / total       0.98      0.98      0.98      2805
+
+--------------------------------------------------------------------------------
+b278 (TRAIN) Vs. b264 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.99      0.99      0.99      2498
+          1       0.95      0.92      0.93       294
+
+avg / total       0.99      0.99      0.99      2792
+
+--------------------------------------------------------------------------------
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_19_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+CPU times: user 1min 19s, sys: 4.39 s, total: 1min 24s
+Wall time: 17 s
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}17}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time}
+         knn = WithAnotherExperiment(
+             clf=KNeighborsClassifier(n\PYZus{}neighbors=50, weights=\PYZsq{}distance\PYZsq{}), 
+             clsnum=cls, data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+         roc(knn(\PYZdq{}b278\PYZdq{}))
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b278 (TRAIN) Vs. b261 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.98      0.99      0.98      2497
+          1       0.86      0.76      0.80       221
+
+avg / total       0.97      0.97      0.97      2718
+
+--------------------------------------------------------------------------------
+b278 (TRAIN) Vs. b262 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      0.99      0.98      2495
+          1       0.91      0.73      0.81       296
+
+avg / total       0.96      0.96      0.96      2791
+
+--------------------------------------------------------------------------------
+b278 (TRAIN) Vs. b263 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.96      0.99      0.98      2500
+          1       0.90      0.68      0.77       305
+
+avg / total       0.95      0.96      0.95      2805
+
+--------------------------------------------------------------------------------
+b278 (TRAIN) Vs. b264 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      0.99      0.98      2498
+          1       0.90      0.73      0.81       294
+
+avg / total       0.96      0.96      0.96      2792
+
+--------------------------------------------------------------------------------
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_20_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+CPU times: user 17.6 s, sys: 0 ns, total: 17.6 s
+Wall time: 17.6 s
+
+    \end{Verbatim}
+
+    \hypertarget{b261-vs.los-demas}{%
+\subsection{b261 vs.~Los demas}\label{b261-vs.los-demas}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}18}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time}
+         svc\PYZus{}linear = WithAnotherExperiment(
+             clf=SVC(kernel=\PYZsq{}linear\PYZsq{}, probability=True), clsnum=cls, 
+             data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+         roc(svc\PYZus{}linear(\PYZdq{}b261\PYZdq{}))
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b261 (TRAIN) Vs. b262 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      0.99      0.98      2495
+          1       0.91      0.73      0.81       296
+
+avg / total       0.96      0.96      0.96      2791
+
+--------------------------------------------------------------------------------
+b261 (TRAIN) Vs. b263 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      0.99      0.98      2500
+          1       0.93      0.74      0.83       305
+
+avg / total       0.97      0.97      0.96      2805
+
+--------------------------------------------------------------------------------
+b261 (TRAIN) Vs. b264 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      0.99      0.98      2498
+          1       0.95      0.77      0.85       294
+
+avg / total       0.97      0.97      0.97      2792
+
+--------------------------------------------------------------------------------
+b261 (TRAIN) Vs. b278 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.94      0.99      0.97      2489
+          1       0.94      0.63      0.76       423
+
+avg / total       0.94      0.94      0.94      2912
+
+--------------------------------------------------------------------------------
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_22_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+CPU times: user 7.17 s, sys: 0 ns, total: 7.17 s
+Wall time: 7.17 s
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}19}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time}
+         svc\PYZus{}poly = WithAnotherExperiment(
+             clf=SVC(kernel=\PYZsq{}poly\PYZsq{}, probability=True), clsnum=cls, 
+             data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+         roc(svc\PYZus{}poly(\PYZdq{}b261\PYZdq{}))
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b261 (TRAIN) Vs. b262 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.95      0.99      0.97      2495
+          1       0.91      0.60      0.73       296
+
+avg / total       0.95      0.95      0.95      2791
+
+--------------------------------------------------------------------------------
+b261 (TRAIN) Vs. b263 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.95      0.99      0.97      2500
+          1       0.89      0.55      0.68       305
+
+avg / total       0.94      0.94      0.94      2805
+
+--------------------------------------------------------------------------------
+b261 (TRAIN) Vs. b264 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.95      0.99      0.97      2498
+          1       0.91      0.59      0.71       294
+
+avg / total       0.95      0.95      0.95      2792
+
+--------------------------------------------------------------------------------
+b261 (TRAIN) Vs. b278 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.92      0.99      0.95      2489
+          1       0.93      0.47      0.62       423
+
+avg / total       0.92      0.92      0.91      2912
+
+--------------------------------------------------------------------------------
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_23_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+CPU times: user 5.97 s, sys: 6 ms, total: 5.98 s
+Wall time: 5.97 s
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}20}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time}
+         svc\PYZus{}rbf = WithAnotherExperiment(
+             clf=SVC(kernel=\PYZsq{}rbf\PYZsq{}, probability=True), clsnum=cls, 
+             data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+         roc(svc\PYZus{}rbf(\PYZdq{}b261\PYZdq{}))
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b261 (TRAIN) Vs. b262 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      1.00      0.98      2495
+          1       0.95      0.70      0.80       296
+
+avg / total       0.96      0.96      0.96      2791
+
+--------------------------------------------------------------------------------
+b261 (TRAIN) Vs. b263 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.96      0.99      0.98      2500
+          1       0.94      0.66      0.77       305
+
+avg / total       0.96      0.96      0.96      2805
+
+--------------------------------------------------------------------------------
+b261 (TRAIN) Vs. b264 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      1.00      0.98      2498
+          1       0.95      0.70      0.80       294
+
+avg / total       0.96      0.96      0.96      2792
+
+--------------------------------------------------------------------------------
+b261 (TRAIN) Vs. b278 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.94      0.99      0.96      2489
+          1       0.94      0.60      0.73       423
+
+avg / total       0.94      0.94      0.93      2912
+
+--------------------------------------------------------------------------------
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_24_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+CPU times: user 6.68 s, sys: 6 ms, total: 6.68 s
+Wall time: 6.67 s
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}21}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time} 
+         rf = WithAnotherExperiment(
+             clf=RandomForestClassifier(n\PYZus{}estimators=500, criterion=\PYZdq{}entropy\PYZdq{}, n\PYZus{}jobs=cpu), 
+             clsnum=cls, data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+         roc(rf(\PYZdq{}b261\PYZdq{}))
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b261 (TRAIN) Vs. b262 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      1.00      0.99      2495
+          1       0.98      0.77      0.86       296
+
+avg / total       0.97      0.97      0.97      2791
+
+--------------------------------------------------------------------------------
+b261 (TRAIN) Vs. b263 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.98      1.00      0.99      2500
+          1       0.98      0.80      0.88       305
+
+avg / total       0.98      0.98      0.98      2805
+
+--------------------------------------------------------------------------------
+b261 (TRAIN) Vs. b264 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.98      1.00      0.99      2498
+          1       0.98      0.85      0.91       294
+
+avg / total       0.98      0.98      0.98      2792
+
+--------------------------------------------------------------------------------
+b261 (TRAIN) Vs. b278 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.95      1.00      0.97      2489
+          1       0.97      0.69      0.80       423
+
+avg / total       0.95      0.95      0.95      2912
+
+--------------------------------------------------------------------------------
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_25_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+CPU times: user 1min 8s, sys: 3.99 s, total: 1min 12s
+Wall time: 16.6 s
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}22}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time}
+         knn = WithAnotherExperiment(
+             clf=KNeighborsClassifier(n\PYZus{}neighbors=50, weights=\PYZsq{}distance\PYZsq{}), 
+             clsnum=cls, data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+         roc(knn(\PYZdq{}b261\PYZdq{}))
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b261 (TRAIN) Vs. b262 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.96      0.99      0.98      2495
+          1       0.93      0.66      0.77       296
+
+avg / total       0.96      0.96      0.96      2791
+
+--------------------------------------------------------------------------------
+b261 (TRAIN) Vs. b263 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.95      0.99      0.97      2500
+          1       0.92      0.58      0.71       305
+
+avg / total       0.95      0.95      0.94      2805
+
+--------------------------------------------------------------------------------
+b261 (TRAIN) Vs. b264 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.96      0.99      0.98      2498
+          1       0.93      0.63      0.75       294
+
+avg / total       0.95      0.96      0.95      2792
+
+--------------------------------------------------------------------------------
+b261 (TRAIN) Vs. b278 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.92      0.99      0.96      2489
+          1       0.92      0.52      0.66       423
+
+avg / total       0.92      0.92      0.91      2912
+
+--------------------------------------------------------------------------------
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_26_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+CPU times: user 16.8 s, sys: 3 ms, total: 16.8 s
+Wall time: 16.8 s
+
+    \end{Verbatim}
+
+    \hypertarget{b278-b261-vs.los-demas}{%
+\subsection{b278 + b261 vs.~Los demas}\label{b278-b261-vs.los-demas}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}23}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time}
+         svc\PYZus{}linear = WithAnotherExperiment(
+             clf=SVC(kernel=\PYZsq{}linear\PYZsq{}, probability=True), clsnum=cls, 
+             data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+         roc(svc\PYZus{}linear([\PYZdq{}b278\PYZdq{}, \PYZdq{}b261\PYZdq{}]))
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b278 + b261 (TRAIN) Vs. b262 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      0.99      0.98      2495
+          1       0.90      0.74      0.81       296
+
+avg / total       0.96      0.96      0.96      2791
+
+--------------------------------------------------------------------------------
+b278 + b261 (TRAIN) Vs. b263 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      0.99      0.98      2500
+          1       0.92      0.73      0.82       305
+
+avg / total       0.96      0.96      0.96      2805
+
+--------------------------------------------------------------------------------
+b278 + b261 (TRAIN) Vs. b264 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      0.99      0.98      2498
+          1       0.94      0.77      0.84       294
+
+avg / total       0.97      0.97      0.97      2792
+
+--------------------------------------------------------------------------------
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_28_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+CPU times: user 37.6 s, sys: 39 ms, total: 37.6 s
+Wall time: 37.6 s
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}24}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time}
+         svc\PYZus{}poly = WithAnotherExperiment(
+             clf=SVC(kernel=\PYZsq{}poly\PYZsq{}, probability=True), clsnum=cls, 
+             data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+         roc(svc\PYZus{}poly([\PYZdq{}b278\PYZdq{}, \PYZdq{}b261\PYZdq{}]))
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b278 + b261 (TRAIN) Vs. b262 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.96      0.99      0.98      2495
+          1       0.90      0.68      0.77       296
+
+avg / total       0.96      0.96      0.96      2791
+
+--------------------------------------------------------------------------------
+b278 + b261 (TRAIN) Vs. b263 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.96      0.99      0.97      2500
+          1       0.86      0.62      0.72       305
+
+avg / total       0.95      0.95      0.94      2805
+
+--------------------------------------------------------------------------------
+b278 + b261 (TRAIN) Vs. b264 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.96      0.99      0.98      2498
+          1       0.90      0.68      0.77       294
+
+avg / total       0.96      0.96      0.96      2792
+
+--------------------------------------------------------------------------------
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_29_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+CPU times: user 22.7 s, sys: 51 ms, total: 22.7 s
+Wall time: 22.7 s
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}25}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time}
+         svc\PYZus{}rbf = WithAnotherExperiment(
+             clf=SVC(kernel=\PYZsq{}rbf\PYZsq{}, probability=True), clsnum=cls, 
+             data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+         roc(svc\PYZus{}rbf([\PYZdq{}b278\PYZdq{}, \PYZdq{}b261\PYZdq{}]))
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b278 + b261 (TRAIN) Vs. b262 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      1.00      0.98      2495
+          1       0.95      0.73      0.82       296
+
+avg / total       0.97      0.97      0.97      2791
+
+--------------------------------------------------------------------------------
+b278 + b261 (TRAIN) Vs. b263 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.96      1.00      0.98      2500
+          1       0.95      0.68      0.79       305
+
+avg / total       0.96      0.96      0.96      2805
+
+--------------------------------------------------------------------------------
+b278 + b261 (TRAIN) Vs. b264 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      1.00      0.98      2498
+          1       0.96      0.74      0.84       294
+
+avg / total       0.97      0.97      0.97      2792
+
+--------------------------------------------------------------------------------
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_30_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+CPU times: user 23.3 s, sys: 39 ms, total: 23.4 s
+Wall time: 23.4 s
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}26}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time} 
+         rf = WithAnotherExperiment(
+             clf=RandomForestClassifier(n\PYZus{}estimators=500, criterion=\PYZdq{}entropy\PYZdq{}, n\PYZus{}jobs=cpu), 
+             clsnum=cls, data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+         roc(rf([\PYZdq{}b278\PYZdq{}, \PYZdq{}b261\PYZdq{}]))
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b278 + b261 (TRAIN) Vs. b262 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.98      1.00      0.99      2495
+          1       0.98      0.85      0.91       296
+
+avg / total       0.98      0.98      0.98      2791
+
+--------------------------------------------------------------------------------
+b278 + b261 (TRAIN) Vs. b263 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.98      1.00      0.99      2500
+          1       0.97      0.85      0.91       305
+
+avg / total       0.98      0.98      0.98      2805
+
+--------------------------------------------------------------------------------
+b278 + b261 (TRAIN) Vs. b264 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.99      1.00      0.99      2498
+          1       0.97      0.92      0.94       294
+
+avg / total       0.99      0.99      0.99      2792
+
+--------------------------------------------------------------------------------
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_31_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+CPU times: user 1min 51s, sys: 3.25 s, total: 1min 55s
+Wall time: 13.5 s
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}27}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time}
+         knn = WithAnotherExperiment(
+             clf=KNeighborsClassifier(n\PYZus{}neighbors=50, weights=\PYZsq{}distance\PYZsq{}), 
+             clsnum=cls, data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+         roc(knn([\PYZdq{}b278\PYZdq{}, \PYZdq{}b261\PYZdq{}]))
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b278 + b261 (TRAIN) Vs. b262 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      0.99      0.98      2495
+          1       0.92      0.72      0.81       296
+
+avg / total       0.96      0.96      0.96      2791
+
+--------------------------------------------------------------------------------
+b278 + b261 (TRAIN) Vs. b263 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.96      0.99      0.98      2500
+          1       0.89      0.67      0.77       305
+
+avg / total       0.95      0.96      0.95      2805
+
+--------------------------------------------------------------------------------
+b278 + b261 (TRAIN) Vs. b264 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      0.99      0.98      2498
+          1       0.90      0.73      0.81       294
+
+avg / total       0.96      0.96      0.96      2792
+
+--------------------------------------------------------------------------------
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_32_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+CPU times: user 25.9 s, sys: 3 ms, total: 25.9 s
+Wall time: 25.9 s
+
+    \end{Verbatim}
+
+    \hypertarget{b278-b261-b264-vs.los-demas}{%
+\subsection{b278 + b261 + b264 vs.~Los
+demas}\label{b278-b261-b264-vs.los-demas}}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}28}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time}
+         svc\PYZus{}linear = WithAnotherExperiment(
+             clf=SVC(kernel=\PYZsq{}linear\PYZsq{}, probability=True), clsnum=cls, 
+             data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+         roc(svc\PYZus{}linear([\PYZdq{}b278\PYZdq{}, \PYZdq{}b261\PYZdq{}, \PYZdq{}b264\PYZdq{}]))
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b278 + b261 + b264 (TRAIN) Vs. b262 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      0.99      0.98      2495
+          1       0.90      0.77      0.83       296
+
+avg / total       0.97      0.97      0.97      2791
+
+--------------------------------------------------------------------------------
+b278 + b261 + b264 (TRAIN) Vs. b263 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      0.99      0.98      2500
+          1       0.92      0.76      0.83       305
+
+avg / total       0.97      0.97      0.97      2805
+
+--------------------------------------------------------------------------------
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_34_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+CPU times: user 44.1 s, sys: 242 ms, total: 44.3 s
+Wall time: 44.3 s
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}29}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time}
+         svc\PYZus{}poly = WithAnotherExperiment(
+             clf=SVC(kernel=\PYZsq{}poly\PYZsq{}, probability=True), clsnum=cls, 
+             data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+         roc(svc\PYZus{}poly([\PYZdq{}b278\PYZdq{}, \PYZdq{}b261\PYZdq{}, \PYZdq{}b264\PYZdq{}]))
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b278 + b261 + b264 (TRAIN) Vs. b262 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.96      0.99      0.98      2495
+          1       0.90      0.69      0.78       296
+
+avg / total       0.96      0.96      0.96      2791
+
+--------------------------------------------------------------------------------
+b278 + b261 + b264 (TRAIN) Vs. b263 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.96      0.99      0.97      2500
+          1       0.86      0.67      0.75       305
+
+avg / total       0.95      0.95      0.95      2805
+
+--------------------------------------------------------------------------------
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_35_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+CPU times: user 27.9 s, sys: 296 ms, total: 28.2 s
+Wall time: 28.2 s
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}30}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time}
+         svc\PYZus{}rbf = WithAnotherExperiment(
+             clf=SVC(kernel=\PYZsq{}rbf\PYZsq{}, probability=True), clsnum=cls, 
+             data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+         roc(svc\PYZus{}rbf([\PYZdq{}b278\PYZdq{}, \PYZdq{}b261\PYZdq{}, \PYZdq{}b264\PYZdq{}]))
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b278 + b261 + b264 (TRAIN) Vs. b262 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      0.99      0.98      2495
+          1       0.94      0.75      0.84       296
+
+avg / total       0.97      0.97      0.97      2791
+
+--------------------------------------------------------------------------------
+b278 + b261 + b264 (TRAIN) Vs. b263 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      0.99      0.98      2500
+          1       0.94      0.73      0.82       305
+
+avg / total       0.96      0.97      0.96      2805
+
+--------------------------------------------------------------------------------
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_36_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+CPU times: user 28.3 s, sys: 241 ms, total: 28.5 s
+Wall time: 28.5 s
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}31}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time} 
+         rf = WithAnotherExperiment(
+             clf=RandomForestClassifier(n\PYZus{}estimators=500, criterion=\PYZdq{}entropy\PYZdq{}, n\PYZus{}jobs=cpu), 
+             clsnum=cls, data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+         roc(rf([\PYZdq{}b278\PYZdq{}, \PYZdq{}b261\PYZdq{}, \PYZdq{}b264\PYZdq{}]))
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b278 + b261 + b264 (TRAIN) Vs. b262 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.98      1.00      0.99      2495
+          1       0.98      0.86      0.92       296
+
+avg / total       0.98      0.98      0.98      2791
+
+--------------------------------------------------------------------------------
+b278 + b261 + b264 (TRAIN) Vs. b263 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.98      1.00      0.99      2500
+          1       0.97      0.87      0.92       305
+
+avg / total       0.98      0.98      0.98      2805
+
+--------------------------------------------------------------------------------
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_37_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+CPU times: user 1min 50s, sys: 1.99 s, total: 1min 52s
+Wall time: 9.67 s
+
+    \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}32}]:} \PY{o}{\PYZpc{}\PYZpc{}}\PY{k}{time}
+         knn = WithAnotherExperiment(
+             clf=KNeighborsClassifier(n\PYZus{}neighbors=50, weights=\PYZsq{}distance\PYZsq{}), 
+             clsnum=cls, data=data, pcls=1, ncls=0, X\PYZus{}columns=X\PYZus{}columns, y\PYZus{}column=\PYZdq{}cls\PYZdq{})
+         roc(knn([\PYZdq{}b278\PYZdq{}, \PYZdq{}b261\PYZdq{}, \PYZdq{}b264\PYZdq{}]))
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+b278 + b261 + b264 (TRAIN) Vs. b262 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      0.99      0.98      2495
+          1       0.91      0.75      0.82       296
+
+avg / total       0.96      0.97      0.96      2791
+
+--------------------------------------------------------------------------------
+b278 + b261 + b264 (TRAIN) Vs. b263 (TEST)
+             precision    recall  f1-score   support
+
+          0       0.97      0.99      0.98      2500
+          1       0.88      0.71      0.79       305
+
+avg / total       0.96      0.96      0.96      2805
+
+--------------------------------------------------------------------------------
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_38_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+CPU times: user 27.5 s, sys: 8 ms, total: 27.5 s
+Wall time: 27.5 s
+
+    \end{Verbatim}
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
