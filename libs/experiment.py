@@ -110,6 +110,7 @@ class WithAnotherExperiment(Experiment):
                 rst = self.experiment(x_train, y_train, x_test, y_test)
                 rst.update({
                     'ids': test_df.id.values,
+                    "test_size": len(test_df),
                     'test_name': test_name,
                     'y_test_real': y_test_real,
                     'train_name': " + ".join(train_name)})
@@ -173,6 +174,7 @@ class KFoldExperiment(Experiment):
 
         return container.Container({
             "test_name": "kfold",
+            "test_size": len(subject_df),
             'ids': u_ids,
             'fpr': fpr,
             'tpr': tpr,
