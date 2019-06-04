@@ -1,20 +1,3 @@
-from IPython import display as d
-
-
-class Printer(object):
-    
-    def simple(self, obj):
-        return d.display(d.Markdown(obj))
-    
-    def __call__(self, obj):
-        if isinstance(obj, str):
-            return self.simple(str)
-        elif  isinstance(obj, (list, tuple, set, frozenset)):
-            return self.iterable(obj)
-        
-    def bf(self, obj):
-        self("** {} **".format(obj))
-        
-    def tt(self, obj):
-        self("`{} **".format(obj))
-        
+version https://git-lfs.github.com/spec/v1
+oid sha256:da3d7e5240b031f7775ac2c6db62eac6da060606aeb49117b1f1d66a623416be
+size 479

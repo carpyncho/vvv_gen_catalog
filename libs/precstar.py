@@ -1,19 +1,3 @@
-import numpy as np
-from sklearn.metrics.ranking import _binary_clf_curve
-
-def prec_star(y_true, probas_pred, ss, rs, pos_label=None,
-                           sample_weight=None):
-    fps, tps, thresholds = _binary_clf_curve(y_true, probas_pred,
-                                             pos_label=pos_label,
-                                             sample_weight=sample_weight)
-    
-    fps = fps * rs / float(ss)
-    
-    precision = tps / (tps + fps)
-    precision[np.isnan(precision)] = 0
-
-    # stop when full recall attained
-    # and reverse the outputs so recall is decreasing
-    last_ind = tps.searchsorted(tps[-1])
-    sl = slice(last_ind, None, -1)
-    return np.r_[precision[sl], 1] 
+version https://git-lfs.github.com/spec/v1
+oid sha256:5cb7059d2996f8d635b06739bc51e7cc4319e35ded3ef74bee17c67d957f8a65
+size 704

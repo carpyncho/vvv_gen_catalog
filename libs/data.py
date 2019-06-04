@@ -1,23 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
-import os
-import glob
-
-import numpy as np
-import pandas as pd
-
-PATH = "/home/data/carpyncho/stored/light_curves/"
-
-GLOB_FILES = os.path.join(PATH, "*", "features_*.npy")
-
-FILES = dict(
-    (os.path.basename(os.path.dirname(fname)), fname)
-    for fname in glob.glob(GLOB_FILES))
-
-
-def read_data(tile, random_seed=None):
-    return np.load(FILES[tile])
-
-
-read_data("b278")
+version https://git-lfs.github.com/spec/v1
+oid sha256:6037deff20e25497b915c37582ed3b36b8fc78c071387c9f41878a3a489f6335
+size 419
